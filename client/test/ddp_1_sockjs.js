@@ -114,7 +114,7 @@ describe('DDP 1 (sockjs)', function() {
 
     // test whether we receive a pong message
     it('should send pong message if connected (without id)', function(done) {
-      connect(function () {
+      Utils.connect(client, function () {
         client.send('{"msg": "ping"}')
         client.onmessage = function (e) {
           var msg = JSON.parse(e.data);
@@ -128,7 +128,7 @@ describe('DDP 1 (sockjs)', function() {
     // test whether we receive a pong message
     it('should send pong message if connected (with id)', function(done) {
       var rand = Random.id();
-      connect(function () {
+      Utils.connect(client, function () {
         client.send('{"msg": "ping", "id": "'+ rand +'"}')
         client.onmessage = function (e) {
           var msg = JSON.parse(e.data);
@@ -139,16 +139,6 @@ describe('DDP 1 (sockjs)', function() {
         }
       })
     });
-
-    function connect (callback) {
-      client.send('{"msg": "connect", "version": "1", "support": ["1"]}')
-      client.onmessage = function (e) {
-        var msg = JSON.parse(e.data);
-        if(msg.msg === 'connected') {
-          callback();
-        }
-      }
-    }
 
   }); // ping
 
